@@ -1,7 +1,7 @@
 (function init() {
   const { document } = window;
-  const scroller = document.querySelector('.scroller');
-  const canvas = document.querySelector('.combo-image');
+  const wrapper = document.querySelector('.wrapper');
+  const canvas = document.querySelector('.canvas');
   const context = canvas.getContext('2d');
   let dragging = false;
   const MIN_ZOOM = 25; // percents;
@@ -60,11 +60,11 @@
       const deltaX = pageX - startPos.x;
       const deltaY = pageY - startPos.y;
       const canvasStyle = window.getComputedStyle(canvas);
-      const scrollerStyle = window.getComputedStyle(scroller);
+      const wrapperStyle = window.getComputedStyle(wrapper);
 
       const canvasWidth = parseFloat(canvasStyle.width);
-      const scrollerWidth = parseFloat(scrollerStyle.width);
-      const zoom = (canvasWidth / scrollerWidth || DEFAULT_ZOOM) * 100;
+      const wrapperWidth = parseFloat(wrapperStyle.width);
+      const zoom = (canvasWidth / wrapperWidth || DEFAULT_ZOOM) * 100;
 
       canvas.style = [
         `width:${zoom}%`,
@@ -77,13 +77,13 @@
     const { deltaY } = ev;
     const zoomChange = Math.round(deltaY / 5);
     const canvasStyle = window.getComputedStyle(canvas);
-    const scrollerStyle = window.getComputedStyle(scroller);
-    const scrollerWidth = parseFloat(scrollerStyle.width);
+    const wrapperStyle = window.getComputedStyle(wrapper);
+    const wrapperWidth = parseFloat(wrapperStyle.width);
     const canvasWidth = parseFloat(canvasStyle.width);
     const x = parseFloat(canvasStyle[xPos]);
     const y = parseFloat(canvasStyle[yPos]);
 
-    const oldZoom = (canvasWidth / scrollerWidth || DEFAULT_ZOOM) * 100;
+    const oldZoom = (canvasWidth / wrapperWidth || DEFAULT_ZOOM) * 100;
     let newZoom = oldZoom + zoomChange;
 
     if (newZoom < MIN_ZOOM) {
@@ -119,15 +119,15 @@
       throw new Error(error);
     });
 
-  scroller.addEventListener('mouseup', () => cancelDragging);
-  scroller.addEventListener('mouseleave', () => cancelDragging);
-  scroller.addEventListener('mouseout', () => cancelDragging);
-  scroller.addEventListener('touchend', () => cancelDragging);
-  scroller.addEventListener('touchcancel', () => cancelDragging);
+  wrapper.addEventListener('mouseup', () => cancelDragging);
+  wrapper.addEventListener('mouseleave', () => cancelDragging);
+  wrapper.addEventListener('mouseout', () => cancelDragging);
+  wrapper.addEventListener('touchend', () => cancelDragging);
+  wrapper.addEventListener('touchcancel', () => cancelDragging);
 
-  scroller.addEventListener('mousemove', mouseMove);
-  scroller.addEventListener('touchmove', mouseMove);
-  scroller.addEventListener('mousewheel', mouseWheel);
-  scroller.addEventListener('touchstart', mouseDown);
-  scroller.addEventListener('mousedown', mouseDown);
+  wrapper.addEventListener('mousemove', mouseMove);
+  wrapper.addEventListener('touchmove', mouseMove);
+  wrapper.addEventListener('mousewheel', mouseWheel);
+  wrapper.addEventListener('touchstart', mouseDown);
+  wrapper.addEventListener('mousedown', mouseDown);
 }());
